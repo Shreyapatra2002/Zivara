@@ -29,14 +29,13 @@ import {
   Search
 } from "lucide-react";
 
-// Image Paths (generated in previous steps)
-const HERO_IMAGE_PATH = "/src/assets/images/zivara_hero_concept_1779685177793.png";
-const STRUCTURE_IMAGE_PATH = "/src/assets/images/zivara_growth_structure_1779685198449.png";
-const ATOMIC_IMAGE_PATH = "/src/assets/images/zivara_atomic_precision_1779685542660.png";
-const ADVISORY_IMAGE_PATH = "/src/assets/images/zivara_advisory_council_1779685561313.png";
-const NEXUS_IMAGE_PATH = "/src/assets/images/zivara_golden_hour_nexus_1779686907365.png";
-const LOOP_IMAGE_PATH = "/src/assets/images/zivara_infinite_loop_1779686925680.png";
-
+// Add these after the other imports (around line 25)
+import heroImage from './assets/images/zivara_hero_concept_1779685177793.png';
+import growthStructure from './assets/images/zivara_growth_structure_1779685198449.png';
+import atomicPrecision from './assets/images/zivara_atomic_precision_1779685542660.png';
+import advisoryCouncil from './assets/images/zivara_advisory_council_1779685561313.png';
+import goldenHour from './assets/images/zivara_golden_hour_nexus_1779686907365.png';
+import infiniteLoop from './assets/images/zivara_infinite_loop_1779686925680.png';
 // Definitions of types
 interface SolutionDetail {
   id: string;
@@ -104,7 +103,22 @@ export default function App() {
     correlation: string;
   } | null>(null);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
+  // Image variables for the gallery
+  const HERO_IMAGE_PATH = heroImage;
+  const STRUCTURE_IMAGE_PATH = growthStructure;
+  const ATOMIC_IMAGE_PATH = atomicPrecision;
+  const ADVISORY_IMAGE_PATH = advisoryCouncil;
+  const NEXUS_IMAGE_PATH = goldenHour;
+  const LOOP_IMAGE_PATH = infiniteLoop;
 
+
+  // Image variables for the gallery
+  const HERO_IMAGE_PATH = heroImage;
+  const STRUCTURE_IMAGE_PATH = growthStructure;
+  const ATOMIC_IMAGE_PATH = atomicPrecision;
+  const ADVISORY_IMAGE_PATH = advisoryCouncil;
+  const NEXUS_IMAGE_PATH = goldenHour;
+  const LOOP_IMAGE_PATH = infiniteLoop;
   // Growth Sandbox Simulator controls
   const [baseRevenue, setBaseRevenue] = useState<number>(35000); // base MRR
   const [retentionRate, setRetentionRate] = useState<number>(85); // % retention
@@ -151,6 +165,14 @@ export default function App() {
 
   // Calculate compatibility score %
   const compatibilityScore = useMemo(() => {
+
+  // Image variables for the gallery
+  const HERO_IMAGE_PATH = heroImage;
+  const STRUCTURE_IMAGE_PATH = growthStructure;
+  const ATOMIC_IMAGE_PATH = atomicPrecision;
+  const ADVISORY_IMAGE_PATH = advisoryCouncil;
+  const NEXUS_IMAGE_PATH = goldenHour;
+  const LOOP_IMAGE_PATH = infiniteLoop;
     const totalChecked = Object.values(quizAnswers).filter(Boolean).length;
     return Math.round((totalChecked / 6) * 100);
   }, [quizAnswers]);
