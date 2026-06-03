@@ -36,6 +36,7 @@ import atomicPrecision from './assets/images/zivara_atomic_precision_17796855426
 import advisoryCouncil from './assets/images/zivara_advisory_council_1779685561313.png';
 import goldenHour from './assets/images/zivara_golden_hour_nexus_1779686907365.png';
 import infiniteLoop from './assets/images/zivara_infinite_loop_1779686925680.png';
+import Charts from './components/Charts';
 // Definitions of types
 interface SolutionDetail {
   id: string;
@@ -71,7 +72,7 @@ const faqData: FaqItem[] = [
   },
   {
     question: "Who is your typical client profile and do you support early startups?",
-    answer: "Our advisory supports established, premium-tier operators and founders with an active monthly recurring revenue floor of $10,000 to $500,000+. If you are pre-revenue or seeking simple general tips, our precision formulas will have nothing to stabilize. We accept only five active onboarding seats per quarter.",
+    answer: "Our advisory supports established, premium-tier operators and founders with an active monthly recurring revenue floor of ₹10,00,000 to ₹5,00,00,000+. If you are pre-revenue or seeking simple general tips, our precision formulas will have nothing to stabilize. We accept only five active onboarding seats per quarter.",
     metricCallout: "Available Seats: 2/5 Open"
   },
   {
@@ -87,6 +88,13 @@ const faqData: FaqItem[] = [
 ];
 
 export default function App() {
+  const formatINR = (n: number) => {
+    try {
+      return n.toLocaleString('en-IN', { maximumFractionDigits: 0 }).replace(/^/, '₹');
+    } catch (e) {
+      return `₹${n}`;
+    }
+  };
   // Navigation & Interactive States
   const [activeTab, setActiveTab] = useState<"services" | "process" | "why" | "contact">("services");
   const [bookingCall, setBookingCall] = useState(false);
@@ -110,20 +118,12 @@ export default function App() {
   const ADVISORY_IMAGE_PATH = advisoryCouncil;
   const NEXUS_IMAGE_PATH = goldenHour;
   const LOOP_IMAGE_PATH = infiniteLoop;
-
-
-  // Image variables for the gallery
-  const HERO_IMAGE_PATH = heroImage;
-  const STRUCTURE_IMAGE_PATH = growthStructure;
-  const ATOMIC_IMAGE_PATH = atomicPrecision;
-  const ADVISORY_IMAGE_PATH = advisoryCouncil;
-  const NEXUS_IMAGE_PATH = goldenHour;
-  const LOOP_IMAGE_PATH = infiniteLoop;
   // Growth Sandbox Simulator controls
-  const [baseRevenue, setBaseRevenue] = useState<number>(35000); // base MRR
+  // Values interpreted in INR for Indian market
+  const [baseRevenue, setBaseRevenue] = useState<number>(350000); // base MRR (₹3,50,000)
   const [retentionRate, setRetentionRate] = useState<number>(85); // % retention
   const [automationLevel, setAutomationLevel] = useState<number>(40); // % leverage
-  const [avgTicketSize, setAvgTicketSize] = useState<number>(2500); // ticket pricing
+  const [avgTicketSize, setAvgTicketSize] = useState<number>(25000); // average contract size in INR
 
   // Dynamic Trajectory Calculations based on inputs
   const simulatedProjection = useMemo(() => {
@@ -165,14 +165,6 @@ export default function App() {
 
   // Calculate compatibility score %
   const compatibilityScore = useMemo(() => {
-
-  // Image variables for the gallery
-  const HERO_IMAGE_PATH = heroImage;
-  const STRUCTURE_IMAGE_PATH = growthStructure;
-  const ATOMIC_IMAGE_PATH = atomicPrecision;
-  const ADVISORY_IMAGE_PATH = advisoryCouncil;
-  const NEXUS_IMAGE_PATH = goldenHour;
-  const LOOP_IMAGE_PATH = infiniteLoop;
     const totalChecked = Object.values(quizAnswers).filter(Boolean).length;
     return Math.round((totalChecked / 6) * 100);
   }, [quizAnswers]);
@@ -345,6 +337,11 @@ export default function App() {
               <div className="flex items-center justify-between">
                 <span className="text-xs uppercase tracking-[0.12em] text-[#8a8278] font-mono">Select Growth Target</span>
                 <span className="text-[10px] uppercase tracking-[0.1em] text-white/40">Expected timelines</span>
+              </div>
+
+              {/* Animated charts */}
+              <div className="mt-4">
+                <Charts simulatedProjection={simulatedProjection} />
               </div>
               <div className="grid grid-cols-3 gap-3">
                 {[2, 3, 5].map((mult) => (
@@ -695,20 +692,20 @@ export default function App() {
               <div className="space-y-3">
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-[#8a8278] uppercase tracking-wider">Beginning Monthly Revenue</span>
-                  <span className="font-mono text-[#c8a96e] font-semibold">${baseRevenue.toLocaleString()}</span>
+                  <span className="font-mono text-[#c8a96e] font-semibold">{formatINR(baseRevenue)}</span>
                 </div>
                 <input 
                   type="range" 
-                  min="10000" 
-                  max="150000" 
-                  step="2500"
+                  min="100000" 
+                  max="1500000" 
+                  step="25000"
                   value={baseRevenue}
                   onChange={(e) => setBaseRevenue(Number(e.target.value))}
                   className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#c8a96e]"
                 />
                 <div className="flex justify-between text-[9px] text-[#8a8278] font-mono">
-                  <span>$10k</span>
-                  <span>$150k</span>
+                  <span>{formatINR(100000)}</span>
+                  <span>{formatINR(1500000)}</span>
                 </div>
               </div>
 
@@ -758,20 +755,20 @@ export default function App() {
               <div className="space-y-3">
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-[#8a8278] uppercase tracking-wider">Average Client Agreement (LTV)</span>
-                  <span className="font-mono text-[#c8a96e] font-semibold">${avgTicketSize.toLocaleString()}</span>
+                  <span className="font-mono text-[#c8a96e] font-semibold">{formatINR(avgTicketSize)}</span>
                 </div>
                 <input 
                   type="range" 
-                  min="1000" 
-                  max="15000" 
-                  step="500"
+                  min="10000" 
+                  max="150000" 
+                  step="5000"
                   value={avgTicketSize}
                   onChange={(e) => setAvgTicketSize(Number(e.target.value))}
                   className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-[#c8a96e]"
                 />
                 <div className="flex justify-between text-[9px] text-[#8a8278] font-mono">
-                  <span>$1,000 / mo</span>
-                  <span>$15,000 / mo</span>
+                  <span>{formatINR(10000)} / mo</span>
+                  <span>{formatINR(150000)} / mo</span>
                 </div>
               </div>
             </div>
@@ -781,24 +778,42 @@ export default function App() {
               
               {/* Dynamic outputs counters */}
               <div className="grid grid-cols-3 gap-4">
-                <div className="p-3 border border-white/5 rounded">
+                <motion.div
+                  key={simulatedProjection[12].baseline}
+                  initial={{ opacity: 0.6, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.45 }}
+                  className="p-3 border border-white/5 rounded"
+                >
                   <div className="text-[8px] uppercase tracking-white text-[#8a8278] mb-1">Baseline Year 1</div>
                   <div className="text-sm font-mono text-white font-medium">
-                    ${simulatedProjection[12].baseline.toLocaleString()}
+                    {formatINR(simulatedProjection[12].baseline)}
                   </div>
-                </div>
-                <div className="p-3 border border-[#c8a96e]/20 bg-[#c8a96e]/5 rounded">
+                </motion.div>
+                <motion.div
+                  key={simulatedProjection[12].val}
+                  initial={{ opacity: 0.6, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.45 }}
+                  className="p-3 border border-[#c8a96e]/20 bg-[#c8a96e]/5 rounded"
+                >
                   <div className="text-[8px] uppercase tracking-white text-[#c8a96e] mb-1">Simulated Year 1</div>
                   <div className="text-sm font-mono text-[#c8a96e] font-semibold">
-                    ${simulatedProjection[12].val.toLocaleString()}
+                    {formatINR(simulatedProjection[12].val)}
                   </div>
-                </div>
-                <div className="p-3 border border-white/5 rounded">
+                </motion.div>
+                <motion.div
+                  key={Math.round(((simulatedProjection[12].val - simulatedProjection[12].baseline) / simulatedProjection[12].baseline) * 100)}
+                  initial={{ opacity: 0.6, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.45 }}
+                  className="p-3 border border-white/5 rounded"
+                >
                   <div className="text-[8px] uppercase tracking-white text-white/40 mb-1">Leverage Uplift</div>
                   <div className="text-sm font-mono text-emerald-400 font-medium">
                     {Math.round(((simulatedProjection[12].val - simulatedProjection[12].baseline) / simulatedProjection[12].baseline) * 100)}% ↑
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Dynamic trajectory plotter representation in interactive SVG */}
@@ -824,12 +839,12 @@ export default function App() {
                   <line x1="10" y1="160" x2="370" y2="160" stroke="rgba(255,255,255,0.06)" />
 
                   {/* Render simulated path line dynamic coordinates */}
-                  <path 
+                      <path 
                     d={`M 10,150 L ${simulatedProjection.map((pt, i) => {
                       const x = 10 + (i * 30);
                       // scale y coordinate between 150 (min) and 20 (max)
-                      // scale based on max possible val $400,000 threshold
-                      const ratio = Math.min(pt.val / 350000, 1.0);
+                      // scale based on max possible val (approx ₹3,50,00,000) threshold
+                      const ratio = Math.min(pt.val / 35000000, 1.0);
                       const y = 150 - (ratio * 125);
                       return `${x},${y}`;
                     }).join(" L ")}`}

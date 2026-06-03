@@ -68,3 +68,23 @@ body {
   overflow-x: hidden;
   font-family: "Inter", sans-serif;
 }
+
+/* 3D helpers and responsive tweaks */
+.card-3d {
+  transform: perspective(1000px) translateZ(0);
+  transition: transform 0.45s cubic-bezier(.2,.9,.2,1), box-shadow 0.45s;
+  will-change: transform;
+}
+.card-3d:hover,
+.card-3d:focus-within {
+  transform: perspective(1000px) rotateX(6deg) rotateY(-6deg) translateZ(6px) scale(1.005);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.6);
+}
+
+@media (max-width: 768px) {
+  .font-serif { font-size: 1.15rem; }
+  header .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
+}
+
+/* Chart container default sizing */
+.chart-wrap { min-height: 160px; }

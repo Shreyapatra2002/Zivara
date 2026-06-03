@@ -5,6 +5,8 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    // Use relative base so built assets work when site is served from a subpath
+    base: './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
